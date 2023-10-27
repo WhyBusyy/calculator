@@ -4,7 +4,8 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Electrolize&family=Silkscreen&family=Wallpoet&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Electrolize&family=Silkscreen&family=Wallpoet&display=swap"
+        rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -62,105 +63,52 @@
             font-family: 'Wallpoet', sans-serif;
         }
     </style>
-    <script>
-        let result = 0;
-        let operator = "";
-        let currentValue = "";
-
-        function plus() {
-            operator = "+";
-            result = parseFloat(getInputValue());
-            setInputValue("0");
-        }
-
-        function minus() {
-            operator = "-";
-            result = parseFloat(getInputValue());
-            setInputValue("0");
-        }
-
-        function multiply() {
-            operator = "*";
-            result = parseFloat(getInputValue());
-            setInputValue("0");
-        }
-
-        function divide() {
-            operator = "/";
-            result = parseFloat(getInputValue());
-            setInputValue("0");
-        }
-
-        function number(num) {
-            let inputField = document.querySelector('input');
-            if (!inputField) return;
-            if (inputField.value === "0") {
-                setInputValue(num.toString());
-            } else {
-                setInputValue(inputField.value + num.toString());
-            }
-        }
-
-        function equal() {
-            let inputField = document.querySelector('input');
-            if (!inputField) return;
-            if (operator === "+") {
-                result += parseFloat(inputField.value);
-            } else if (operator === "-") {
-                result -= parseFloat(inputField.value);
-            } else if (operator === "*") {
-                result *= parseFloat(inputField.value);
-            } else if (operator === "/") {
-                result /= parseFloat(inputField.value);
-            }
-            setInputValue(result.toString());
-        }
-
-        function cancel() {
-            result = 0;
-            operator = "";
-            setInputValue("0");
-        }
-
-        function getInputValue() {
-            let inputField = document.querySelector('input');
-            return inputField ? inputField.value : "0";
-        }
-
-        function setInputValue(value) {
-            let inputField = document.querySelector('input');
-            if (inputField) {
-                inputField.value = value;
-            }
-        }
-    </script>
 </head>
 
 <body>
     <h1>계산기</h1>
     <div class="calculator">
         <div class="result">
-            <input type="text" placeholder="0">
+            <input type="text" id="result" placeholder="0">
         </div>
         <div class="button">
-            <button onclick="plus()">+</button>
-            <button onclick="minus()">-</button>
-            <button onclick="multiply()">*</button>
-            <button onclick="divide()">/</button>
-            <button onclick="number(7)">7</button>
-            <button onclick="number(8)">8</button>
-            <button onclick="number(9)">9</button>
-            <button onclick="equal()">=</button>
-            <button onclick="number(4)">4</button>
-            <button onclick="number(5)">5</button>
-            <button onclick="number(6)">6</button>
-            <button onclick="cancel()">C</button>
-            <button onclick="number(1)">1</button>
-            <button onclick="number(2)">2</button>
-            <button onclick="number(3)">3</button>
-            <button onclick="number(0)">0</button>
+            <button onclick="appendToResult('7')">7</button>
+            <button onclick="appendToResult('8')">8</button>
+            <button onclick="appendToResult('9')">9</button>
+            <button onclick="appendToResult('+')">+</button>
+            <button onclick="appendToResult('4')">4</button>
+            <button onclick="appendToResult('5')">5</button>
+            <button onclick="appendToResult('6')">6</button>
+            <button onclick="appendToResult('-')">-</button>
+            <button onclick="appendToResult('1')">1</button>
+            <button onclick="appendToResult('2')">2</button>
+            <button onclick="appendToResult('3')">3</button>
+            <button onclick="appendToResult('*')">*</button>
+            <button onclick="clearResult()">C</button>
+            <button onclick="appendToResult('0')">0</button>
+            <button onclick="calculateResult()">=</button>
+            <button onclick="appendToResult('/')">/</button>
         </div>
     </div>
+    <script>
+        let result = document.getElementById('result');
+
+        function appendToResult(value) {
+            result.value += value;
+        }
+
+        function calculateResult() {
+            try {
+                result.value = Function('"use strict";return (' + result.value + ')')();
+            } catch (error) {
+                result.value = 'Error';
+            }
+        }
+
+        function clearResult() {
+            result.value = '';
+        }
+    </script>
 </body>
 
 </html>
